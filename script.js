@@ -10,7 +10,7 @@ var passCriteria = {
     includeSpecialChar: true,
 
     get: function () {
-        this.passLength = messages.promptPassLenght();
+        this.passLength = messages.promptPassLength();
         messages.promptPassCriteria();
         
         // Debug logging
@@ -18,9 +18,6 @@ var passCriteria = {
         console.log(this.includeUpper);
         console.log(this.includeNumeric);
         console.log(this.includeSpecialChar);
-        if (this.isValid()) {
-            alert("WE FIRE")
-        }
     },
 
     isValid: function () {
@@ -38,8 +35,8 @@ var passCriteria = {
 
 // Prompt Messages
 var messages = {
-    chooseLenght: "Select a password lenght. Must be 8 to 128 characters.",
-    mustBeLenght: "You must select a lenght between 8 and 128 characters.",
+    chooseLength: "Select a password length. Must be 8 to 128 characters.",
+    mustBeLength: "You must select a length between 8 and 128 characters.",
     criteriaMessage: {
         includeLower: "Include Lowercase? y/n",
         includeUpper: "Include Uppercase? y/n",
@@ -49,19 +46,19 @@ var messages = {
     invalid: "Invalid selection, must be 'y' or 'n'",
     mustSelectOne: "You must select at least one character type.",
 
-    promptPassLenght: function () {
+    promptPassLength: function () {
         do {
-            choiceLenght = prompt(this.chooseLenght);
-            if (choiceLenght == null) {
+            choiceLength = prompt(this.chooseLength);
+            if (choiceLength == null) {
                 return;
             }
     
-            if (choiceLenght < 8 || choiceLenght > 128) {
-                alert(this.mustBeLenght)
+            if (choiceLength < 8 || choiceLength > 128) {
+                alert(this.mustBeLength)
             }
-        } while (choiceLenght < 8 || choiceLenght > 128);
+        } while (choiceLength < 8 || choiceLength > 128);
     
-        return choiceLenght;
+        return choiceLength;
     },
 
     promptPassCriteria: function() {
@@ -110,6 +107,15 @@ var messages = {
     }
 }
 
+var generator = {
+    password: "",
+
+    randomizeCharacter: function () {
+        console.log("Randomized RUN");
+        return "I am a randomized password."
+    }
+}
+
 // Write password to the #password input
 function writePassword() {
     var password = generatePassword();
@@ -118,12 +124,13 @@ function writePassword() {
     passwordText.value = password;
 }
 
-function randomizeCharacter() {
-    console.log("Randomized RUN");
-}
+
 
 function generatePassword() {
-    genPass = passCriteria.get();
+    passCriteria.get();
+    if (passCriteria.isValid()) {
+        genPass = generator.randomizeCharacter();
+    }
     return genPass;
 }
 
