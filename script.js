@@ -3,11 +3,25 @@ var generateBtn = document.querySelector("#generate");
 
 // Default passCriteria
 var passCriteria = {
-    passLength: 0,
+    passLength: 128,
     includeLower: true,
     includeUpper: true,
     includeNumeric: true,
     includeSpecialChar: true,
+
+    get: function () {
+        this.passLength = messages.promptPassLenght();
+        messages.promptPassCriteria();
+        
+        // Debug logging
+        console.log(this.includeLower);
+        console.log(this.includeUpper);
+        console.log(this.includeNumeric);
+        console.log(this.includeSpecialChar);
+        if (this.isValid()) {
+            alert("WE FIRE")
+        }
+    },
 
     isValid: function () {
         if (this.includeLower ||
@@ -108,21 +122,8 @@ function randomizeCharacter() {
     console.log("Randomized RUN");
 }
 
-function getPassCriteria() {
-    passCriteria.passLength = messages.promptPassLenght();
-    messages.promptPassCriteria();
-    console.log(passCriteria.includeLower);
-    console.log(passCriteria.includeUpper);
-    console.log(passCriteria.includeNumeric);
-    console.log(passCriteria.includeSpecialChar);
-    if (passCriteria.isValid()) {
-        alert("WE FIRE")
-    }
-}
-
 function generatePassword() {
-    var genPass = "derp";
-    genPass = getPassCriteria();
+    genPass = passCriteria.get();
     return genPass;
 }
 
