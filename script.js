@@ -1,37 +1,54 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
-// Default passCriteria
-var passCriteria = {
+// Default passGenerator
+var passGenerator = {
     passLength: 128,
-    includeLower: true,
-    includeUpper: true,
-    includeNumeric: true,
-    includeSpecialChar: true,
+    criteria: {
+        includeLower: true,
+        includeUpper: true,
+        includeNumeric: true,
+        includeSpecialChar: true
+    },
 
     get: function () {
         this.passLength = messages.promptPassLength();
         messages.promptPassCriteria();
         
         // Debug logging
-        console.log(this.includeLower);
-        console.log(this.includeUpper);
-        console.log(this.includeNumeric);
-        console.log(this.includeSpecialChar);
+        // console.log(this.criteria.includeLower);
+        // console.log(this.criteria.includeUpper);
+        // console.log(this.criteria.includeNumeric);
+        // console.log(this.criteria.includeSpecialChar);
+    },
+    generator: function () {
+
+        for (var [key, value] of Object.entries(this.criteria)) {
+
+            console.log(`${key}: ${value}`);
+        }
+    },
+
+    generatePassword: function () {
+        this.get();
+        if (this.isValid()) {
+            genPass = this.generator();
+        }
+        return genPass;
     },
 
     isValid: function () {
-        if (this.includeLower ||
-            this.includeUpper ||
-            this.includeNumeric ||
-            this.includeSpecialChar) {
+        if (this.criteria.includeLower ||
+            this.criteria.includeUpper ||
+            this.criteria.includeNumeric ||
+            this.criteria.includeSpecialChar) {
                 return true;
             } else {
                 alert(messages.mustSelectOne);
                 return false;
         }
     }
-}
+};
 
 // Prompt Messages
 var messages = {
@@ -68,19 +85,19 @@ var messages = {
                 var responseIsValid = this.isValidResponse(response)
                 
                 if (response == null) {
-                    passCriteria[key] = false;
+                    passGenerator.criteria[key] = false;
                 
                 } else if (
                     response.toLowerCase() == 'y' ||
                     response.toLowerCase() == 'yes'
                     ) {
-                        passCriteria[key] = true;
+                        passGenerator.criteria[key] = true;
                 
                 } else if (
                     response.toLowerCase() == 'n' ||
                     response.toLowerCase() == 'no'
                     ) {
-                        passCriteria[key] = false;
+                        passGenerator.criteria[key] = false;
     
                 } else {
                     alert(messages.invalid);
@@ -105,34 +122,15 @@ var messages = {
                 return false;
         }
     }
-}
-
-var generator = {
-    password: "",
-
-    randomizeCharacter: function () {
-        console.log("Randomized RUN");
-        return "I am a randomized password."
-    }
-}
+};
 
 // Write password to the #password input
 function writePassword() {
-    var password = generatePassword();
+    var password = passGenerator.generatePassword();
     var passwordText = document.querySelector("#password");
 
     passwordText.value = password;
-}
-
-
-
-function generatePassword() {
-    passCriteria.get();
-    if (passCriteria.isValid()) {
-        genPass = generator.randomizeCharacter();
-    }
-    return genPass;
-}
+};
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
