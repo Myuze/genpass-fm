@@ -28,9 +28,9 @@ var passGenerator = {
             var completed = messages.promptPassCriteria();
 
             if (!completed) {
-                console.log("NOT COMPLETED")
 
                 return false;
+                
             } else {
                 
                 return true;
@@ -107,12 +107,11 @@ var passGenerator = {
     generatePassword: function () {
 
         var completed = this.getCriteria();
-        console.log(completed)
 
         if (this.isValid() && completed) {
-            console.log("genPass: COMPLETED")
 
             var genPass = this.composePass();
+
         } else {
 
             return '';
