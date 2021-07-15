@@ -25,7 +25,15 @@ var passGenerator = {
     getCriteria: function () {
 
         this.passLength = messages.promptPassLength();
-        messages.promptPassCriteria();
+        
+        if (this.passLength == 0) {
+
+            return '';
+
+        } else {
+
+            messages.promptPassCriteria();
+        }
     },
 
     // Random Character Functions
@@ -57,18 +65,18 @@ var passGenerator = {
         var password = '';
         var typesArray = [];
 
+        // To find the amount of chosen criteria
         Object.values(this.criteria).forEach(value => {
             if (value) {
                 typesArray.push(value);
             }
         });
 
+        // Generate a random character based on selected criteria only up to the provided password length
         for (var i = 0; i < this.passLength; i += typesArray.length) {
-            console.log("i: ", i, "typesArray.lenght: ", typesArray.length);
 
             for ([key, value] of Object.entries(this.criteria)) {
                 if (value) {
-                    console.log(value, key);
 
                     if (key == 'includeLower') {
                         password += this.getLower();
@@ -87,9 +95,6 @@ var passGenerator = {
                 }
             }
         }
-        
-
-        console.log(password, "pass.lenght: ", password.length);
 
         return password;
     },
@@ -102,6 +107,8 @@ var passGenerator = {
         if (this.isValid()) {
 
             var genPass = this.composePass();
+        } else {
+            return '';
         }
 
         return genPass;
@@ -147,9 +154,16 @@ var messages = {
         do {
 
             this.passLength = Number(prompt(this.chooseLength));
+            console.log(this.passLength)
  
             // Reprompt if not at least a number from 8 to 128
-            if (isNaN(this.passLength)) {
+            if (this.passLength == 0) {
+
+                alert(this.canceled);
+
+                return '';
+
+            } else if (isNaN(this.passLength)) {
 
                 alert(this.mustBeNumber);
 
@@ -157,11 +171,6 @@ var messages = {
 
                 alert(this.mustBeLength);
 
-            } else if (this.passLength == null) {
-
-                alert(this.canceled);
-
-                return null;
             }
 
         } while (this.passLength < 8 || this.passLength > 128 || isNaN(this.passLength));
@@ -233,6 +242,7 @@ var messages = {
 function writePassword() {
 
     var password = passGenerator.generatePassword();
+    console.log(password.length)
     var passwordText = document.querySelector("#password");
 
     passwordText.value = password;
