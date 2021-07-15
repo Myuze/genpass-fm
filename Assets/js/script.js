@@ -21,11 +21,20 @@ var passGenerator = {
         
         if (this.passLength == 0) {
 
-            return '';
+            return false;
 
         } else {
 
-            messages.promptPassCriteria();
+            var completed = messages.promptPassCriteria();
+
+            if (!completed) {
+                console.log("NOT COMPLETED")
+
+                return false;
+            } else {
+                
+                return true;
+            }
         }
     },
 
@@ -97,9 +106,11 @@ var passGenerator = {
     // Validate password critera and generate a password
     generatePassword: function () {
 
-        this.getCriteria();
+        var completed = this.getCriteria();
+        console.log(completed)
 
-        if (this.isValid()) {
+        if (this.isValid() && completed) {
+            console.log("genPass: COMPLETED")
 
             var genPass = this.composePass();
         } else {
@@ -186,7 +197,7 @@ var messages = {
 
                     alert(this.canceled);
 
-                    return;
+                    return false;
                 
                 } else if (
                     response.toLowerCase() == 'y' ||
@@ -201,7 +212,7 @@ var messages = {
                     ) {
 
                         passGenerator.criteria[key] = false;
-    
+                            
                 } else {
 
                     alert(messages.invalid);
@@ -209,11 +220,13 @@ var messages = {
     
             } while (!responseIsValid);
         }
+
+        return true;
     },
 
     // Validate if responses are acceptable
     isValidResponse: function (response) {
-        
+
         if (response === null) {
 
             return null;
