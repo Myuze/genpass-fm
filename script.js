@@ -1,11 +1,12 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
-// Default passGenerator
+// Password Generator Object
 var passGenerator = {
     passLength: 129,
     charPool: "",
 
+    // Password Criteria
     criteria: {
         includeLower: true,
         includeUpper: true,
@@ -13,19 +14,21 @@ var passGenerator = {
         includeSymbol: true,
     },
 
-    randomizerName: {
-        lower: this.getLower,
-        upper: this.getUpper,
-        num: this.getNum,
-        sym: this.getSym
+    charFunc: {
+        includeLower: this.getLower,
+        includeUpper: this.getUpper,
+        includeNumeric: this.getNum,
+        includeSymbol: this.getSym
     },
 
+    // Get critera for password
     getCriteria: function () {
 
         this.passLength = messages.promptPassLength();
         messages.promptPassCriteria();
     },
 
+    // Random Character Functions
     getLower: function () {
 
         return String.fromCharCode(Math.floor(Math.random() * 10) + 97);
@@ -44,53 +47,71 @@ var passGenerator = {
     getSym: function () {
 
         var symbols =  " !#$%&'()*+,-./:;<=>?@[\]^_`{|}~\"";
-        console.log(symbols);
 
         return symbols[Math.floor(Math.random() * symbols.length)];
     },
 
-    // Used to generate a password based on selected criteria
-    generator: function () {
+    // Used to compose a password based on selected criteria
+    composePass: function () {
 
         var password = '';
-        var typesArr = [];
 
-        typesArr = Object.keys(this.criteria)
-        /*.filter(
-            item => Object.values(item)[0]
-        );*/
+        for (var i = 0; i < this.passLength; i++) {
 
+            for ([key, value] of Object.entries(this.criteria)) {
+                if (value) {
+                    console.log(value, key);
+                    
+                    switch (key) {
+                        case 'includeLower':
+                            password += this.getLower();
 
+                        case 'includeUpper':
+                            password += this.getUpper();
 
-        console.log(typesArr);
-        // for (var [key, value] of Object.entries(this.criteria)) {
-        //     console.log(`${key}: ${value}`);
-        // }
-        // for (i = 0; i < this.passLength; i++) {
+                        case 'includeNumeric':
+                            password += this.getNum();
 
-        // }
+                        case 'includeSymbol':
+                            password += this.getSym();
+                    }
+                }
+            }
+        }
+        
 
-        // var typesCount = inner + upper + num + sym;
+        console.log(password, "pass.lenght: ", password.length);
 
-        return typesArr;
+        return password;
     },
 
+    // Validate password critera and generate a password
     generatePassword: function () {
+
         this.getCriteria();
+
         if (this.isValid()) {
-            var genPass = this.generator();
+
+            var genPass = this.composePass();
         }
+
         return genPass;
     },
 
+    // Criteria isValid if at least 1 criteria is selected
     isValid: function () {
+
         if (this.criteria.includeLower ||
             this.criteria.includeUpper ||
             this.criteria.includeNumeric ||
             this.criteria.includeSymbol) {
+
                 return true;
+
             } else {
+
                 alert(messages.mustSelectOne);
+
                 return false;
         }
     }
@@ -101,41 +122,46 @@ var messages = {
     chooseLength: "Select a password length. Must be 8 to 128 characters.",
     mustBeLength: "You must select a length between 8 and 128 characters.",
     mustBeNumber: "You must select a number between 8 and 128 characters.",
+    invalid: "Invalid selection, must be 'y' or 'n'",
+    mustSelectOne: "You must select at least one character type.",
+    canceled: "Canceled Password Generation.",
+
     criteriaMessage: {
         includeLower: "Include Lowercase? y/n",
         includeUpper: "Include Uppercase? y/n",
         includeNumeric: "Include Numeric? y/n",
         includeSymbol: "Include Special Characters? y/n"
     },   
-    invalid: "Invalid selection, must be 'y' or 'n'",
-    mustSelectOne: "You must select at least one character type.",
-    canceled: "Canceled Password Generation.",
 
     promptPassLength: function () {
         
         do {
+
             this.passLength = Number(prompt(this.chooseLength));
-            console.log(this.passLength)
  
-            // Reprompt if not at least 8 to 128
+            // Reprompt if not at least a number from 8 to 128
             if (isNaN(this.passLength)) {
+
                 alert(this.mustBeNumber);
 
             } else if (this.passLength < 8 || this.passLength > 128) {
+
                 alert(this.mustBeLength);
 
             } else if (this.passLength == null) {
+
                 alert(this.canceled);
+
                 return null;
             }
 
         } while (this.passLength < 8 || this.passLength > 128 || isNaN(this.passLength));
-        console.log("After: " + this.passLength)
     
         return this.passLength;
     },
 
     promptPassCriteria: function() {
+
         for (var key in this.criteriaMessage) {
             
             do {
@@ -144,22 +170,27 @@ var messages = {
                 var responseIsValid = this.isValidResponse(response)
                 
                 if (response === null) {
+
                     alert(this.canceled);
+
                     return;
                 
                 } else if (
                     response.toLowerCase() == 'y' ||
                     response.toLowerCase() == 'yes'
                     ) {
+
                         passGenerator.criteria[key] = true;
                 
                 } else if (
                     response.toLowerCase() == 'n' ||
                     response.toLowerCase() == 'no'
                     ) {
+
                         passGenerator.criteria[key] = false;
     
                 } else {
+
                     alert(messages.invalid);
                 }
     
@@ -167,8 +198,10 @@ var messages = {
         }
     },
 
+    // Validate if responses are acceptable
     isValidResponse: function (response) {
         if (response === null) {
+
             return null;
         }
     
@@ -177,8 +210,11 @@ var messages = {
             response.toLowerCase() == 'n' ||
             response.toLowerCase() == 'no'
             ) {
+
                 return true;
+
             } else {   
+
                 return false;
         }
     }
@@ -186,6 +222,7 @@ var messages = {
 
 // Write password to the #password input
 function writePassword() {
+
     var password = passGenerator.generatePassword();
     var passwordText = document.querySelector("#password");
 
