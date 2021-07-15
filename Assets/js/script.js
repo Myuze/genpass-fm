@@ -108,7 +108,7 @@ var passGenerator = {
 
         var completed = this.getCriteria();
 
-        if (this.isValid() && completed) {
+        if (completed && this.isValid()) {
 
             var genPass = this.composePass();
 
