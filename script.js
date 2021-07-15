@@ -14,13 +14,6 @@ var passGenerator = {
         includeSymbol: true,
     },
 
-    charFunc: {
-        includeLower: this.getLower,
-        includeUpper: this.getUpper,
-        includeNumeric: this.getNum,
-        includeSymbol: this.getSym
-    },
-
     // Get critera for password
     getCriteria: function () {
 
@@ -79,7 +72,9 @@ var passGenerator = {
                 if (value) {
 
                     if (key == 'includeLower') {
+
                         password += this.getLower();
+
                     } else if (key == 'includeUpper') {
 
                         password += this.getUpper();
@@ -108,6 +103,7 @@ var passGenerator = {
 
             var genPass = this.composePass();
         } else {
+
             return '';
         }
 
@@ -182,7 +178,7 @@ var messages = {
         for (var key in this.criteriaMessage) {
             
             do {
-                
+                // Prompt for criteria and validate response
                 var response = prompt(this.criteriaMessage[key]);
                 var responseIsValid = this.isValidResponse(response)
                 
@@ -217,6 +213,7 @@ var messages = {
 
     // Validate if responses are acceptable
     isValidResponse: function (response) {
+        
         if (response === null) {
 
             return null;
