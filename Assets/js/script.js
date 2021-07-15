@@ -1,10 +1,6 @@
-// Assignment Code
-var generateBtn = document.querySelector("#generate");
-
 // Password Generator Object
 var passGenerator = {
     passLength: 129,
-    charPool: "",
 
     // Password Criteria
     criteria: {
@@ -254,6 +250,9 @@ function writePassword() {
 
     passwordText.value = password;
 };
+
+// Assignment Code
+var generateBtn = document.querySelector("#generate");
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
