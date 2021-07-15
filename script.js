@@ -154,7 +154,6 @@ var messages = {
         do {
 
             this.passLength = Number(prompt(this.chooseLength));
-            console.log(this.passLength)
  
             // Reprompt if not at least a number from 8 to 128
             if (this.passLength == 0) {
@@ -242,7 +241,6 @@ var messages = {
 function writePassword() {
 
     var password = passGenerator.generatePassword();
-    console.log(password.length)
     var passwordText = document.querySelector("#password");
 
     passwordText.value = password;
