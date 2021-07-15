@@ -55,26 +55,35 @@ var passGenerator = {
     composePass: function () {
 
         var password = '';
+        var typesArray = [];
 
-        for (var i = 0; i < this.passLength; i++) {
+        Object.values(this.criteria).forEach(value => {
+            if (value) {
+                typesArray.push(value);
+            }
+        });
+
+        for (var i = 0; i < this.passLength; i += typesArray.length) {
+            console.log("i: ", i, "typesArray.lenght: ", typesArray.length);
 
             for ([key, value] of Object.entries(this.criteria)) {
                 if (value) {
                     console.log(value, key);
-                    
-                    switch (key) {
-                        case 'includeLower':
-                            password += this.getLower();
 
-                        case 'includeUpper':
-                            password += this.getUpper();
+                    if (key == 'includeLower') {
+                        password += this.getLower();
+                    } else if (key == 'includeUpper') {
 
-                        case 'includeNumeric':
-                            password += this.getNum();
+                        password += this.getUpper();
 
-                        case 'includeSymbol':
-                            password += this.getSym();
-                    }
+                    } else if (key == 'includeNumeric') {
+
+                        password += this.getNum();
+
+                    } else if (key == 'includeSymbol') {
+
+                        password += this.getSym();
+                    } 
                 }
             }
         }
