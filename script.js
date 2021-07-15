@@ -4,6 +4,8 @@ var generateBtn = document.querySelector("#generate");
 // Default passGenerator
 var passGenerator = {
     passLength: 129,
+    charPool: "",
+
     criteria: {
         includeLower: true,
         includeUpper: true,
@@ -17,37 +19,50 @@ var passGenerator = {
         num: this.getNum,
         sym: this.getSym
     },
-    charPool: "",
 
     getCriteria: function () {
+
         this.passLength = messages.promptPassLength();
         messages.promptPassCriteria();
     },
 
     getLower: function () {
+
         return String.fromCharCode(Math.floor(Math.random() * 10) + 97);
     },
 
     getUpper: function () {
+
         return String.fromCharCode(Math.floor(Math.random() * 10) + 65);
     },
 
     getNum: function () {
+
         return String.fromCharCode(Math.floor(Math.random() * 10) + 48);
     },
 
     getSym: function () {
+
         var symbols =  " !#$%&'()*+,-./:;<=>?@[\]^_`{|}~\"";
-        console.log(symbols)
+        console.log(symbols);
+
         return symbols[Math.floor(Math.random() * symbols.length)];
     },
 
+    // Used to generate a password based on selected criteria
     generator: function () {
 
         var password = '';
-        var typesCount = this.criteria.includeLower + this.criteria.includeUpper + this.criteria.includeNumeric + this.criteria.includeSymbol;
+        var typesArr = [];
 
-        console.log((typesCount));
+        typesArr = Object.keys(this.criteria)
+        /*.filter(
+            item => Object.values(item)[0]
+        );*/
+
+
+
+        console.log(typesArr);
         // for (var [key, value] of Object.entries(this.criteria)) {
         //     console.log(`${key}: ${value}`);
         // }
@@ -57,7 +72,7 @@ var passGenerator = {
 
         // var typesCount = inner + upper + num + sym;
 
-        return typesCount;
+        return typesArr;
     },
 
     generatePassword: function () {
@@ -100,17 +115,22 @@ var messages = {
         
         do {
             this.passLength = Number(prompt(this.chooseLength));
+            console.log(this.passLength)
  
             // Reprompt if not at least 8 to 128
-            if (this.passLength < 8 || this.passLength > 128) {
-                alert(this.mustBeLength);
-            } else if (isNaN(this.passLength)) {
+            if (isNaN(this.passLength)) {
                 alert(this.mustBeNumber);
-            } else {
+
+            } else if (this.passLength < 8 || this.passLength > 128) {
+                alert(this.mustBeLength);
+
+            } else if (this.passLength == null) {
                 alert(this.canceled);
                 return null;
             }
+
         } while (this.passLength < 8 || this.passLength > 128 || isNaN(this.passLength));
+        console.log("After: " + this.passLength)
     
         return this.passLength;
     },
