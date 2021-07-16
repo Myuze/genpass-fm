@@ -104,7 +104,7 @@ var passGenerator = {
         } else {
             finalPass = password;
         }
-        console.log(finalPass.length)
+
         return finalPass;
     },
 
