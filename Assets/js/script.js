@@ -61,6 +61,7 @@ var passGenerator = {
     composePass: function () {
 
         var password = '';
+        var finalPass = '';
         var typesArray = [];
 
         // To find the amount of chosen criteria
@@ -96,7 +97,15 @@ var passGenerator = {
             }
         }
 
-        return password;
+        // Trim the final character if 
+        // typeArray == 3 to keep proper pass length when 3 criteria selected
+        if (typesArray.length == 3) {
+            finalPass = password.slice(0 , -1);
+        } else {
+            finalPass = password;
+        }
+        console.log(finalPass.length)
+        return finalPass;
     },
 
     // Validate password critera and generate a password
