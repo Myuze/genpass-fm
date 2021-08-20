@@ -1,5 +1,7 @@
 # JavaScript: Password Generator
 
+![Pass Gen](passgen.jpg)
+
 Generate a password based on provided criteria.
 
     - Length of 8 - 128 characters
