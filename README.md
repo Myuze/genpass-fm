@@ -1,4 +1,5 @@
 # JavaScript: Password Generator
+https://myuze.github.io/genpass-fm/
 
 ![Pass Gen](passgen.jpg)
 
